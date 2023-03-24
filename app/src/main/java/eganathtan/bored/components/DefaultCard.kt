@@ -1,3 +1,12 @@
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import eganathtan.bored.Status
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DefaultCard(
     state: Status = Status.CONTENT,
@@ -35,10 +45,22 @@ fun DefaultCard(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
 
-            Text(
-                text = text,
-                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold)
-            )
+            AnimatedContent(
+                targetState = text,
+                transitionSpec = {
+                    fadeIn(animationSpec = tween(220, delayMillis = 90)) +
+                            scaleIn(
+                                initialScale = 0.50f,
+                                animationSpec = tween(220, delayMillis = 90)
+                            ) with
+                            fadeOut(animationSpec = tween(90))
+                }
+            ) {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold)
+                )
+            }
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
