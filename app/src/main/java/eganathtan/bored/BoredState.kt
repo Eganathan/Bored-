@@ -13,7 +13,7 @@ class BoredState(val viewModel: BoredViewModel) {
         viewModel.getRandomActivity(
             onSuccess = {
                 boredActivity.value = it
-                Log.e("BA","${it?.activity}")
+                Log.e("BA", "${it?.activity}")
             },
             onFailure = {
 
@@ -22,6 +22,10 @@ class BoredState(val viewModel: BoredViewModel) {
     }
 
     init {
-        fetchRandomActivity()
+        if (viewModel._latestActivity.value?.body() != null) {
+            boredActivity.value = viewModel._latestActivity.value?.body()
+        } else {
+            fetchRandomActivity()
+        }
     }
 }
