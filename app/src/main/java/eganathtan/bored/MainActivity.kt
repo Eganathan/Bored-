@@ -64,27 +64,31 @@ fun MainScreen() {
             CenterAlignedTopAppBar(title = { Text(text = "Bored!") })
         }
     ) {
-
-//        LottieAnimationTest()
-        Column(
-            modifier = Modifier
-                .padding(it)
-                .padding(horizontal = 25.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            val viewModel = remember { BoredViewModel() }
-            val state = remember { BoredState(viewModel = viewModel) }
-
-            DefaultCard(
-                state = state.screenState.value,
-                text = state.boredActivity.value?.activity.orEmpty(),
-                historyCount = state.boredActivityIndex.value,
-                onNext = state::loadNextIfExistsOrFetch,
-                onPrevious = state::loadPreviousIfExists
+        Box {
+            PlayInfiniteLottie(
+                rawId = R.raw.waves,
+                modifier = Modifier.fillMaxSize()
             )
+            Column(
+                modifier = Modifier
+                    .padding(it)
+                    .padding(horizontal = 25.dp)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                val viewModel = remember { BoredViewModel() }
+                val state = remember { BoredState(viewModel = viewModel) }
 
+                DefaultCard(
+                    state = state.screenState.value,
+                    text = state.boredActivity.value?.activity.orEmpty(),
+                    historyCount = state.boredActivityIndex.value,
+                    onNext = state::loadNextIfExistsOrFetch,
+                    onPrevious = state::loadPreviousIfExists
+                )
+
+            }
         }
     }
 
@@ -98,7 +102,10 @@ fun LoadingBox() {
 }
 
 @Composable
-fun PlayInfiniteLottie(rawId: Int) {
+fun PlayInfiniteLottie(
+    rawId: Int,
+    modifier: Modifier = Modifier
+) {
     val sec by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(rawId))
     LottieAnimation(
         composition = sec,
