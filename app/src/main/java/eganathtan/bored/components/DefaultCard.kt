@@ -1,4 +1,5 @@
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -21,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import eganathtan.bored.LoadingBox
 import eganathtan.bored.Status
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -28,8 +31,9 @@ import eganathtan.bored.Status
 fun DefaultCard(
     state: Status = Status.CONTENT,
     text: String = "Random Text...",
+    historyCount: Int,
     onNext: () -> Unit = {},
-    onBookmark: () -> Unit = {},
+    onPrevious: () -> Unit = {},
     onError: () -> Unit = {}
 ) {
     Card(
@@ -40,11 +44,10 @@ fun DefaultCard(
     {
         Column(
             modifier = Modifier
-                .defaultMinSize(minHeight = 250.dp)
+                .heightIn(250.dp, max = 250.dp)
                 .padding(vertical = 10.dp, horizontal = 20.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-
             AnimatedContent(
                 targetState = text,
                 transitionSpec = {
@@ -56,10 +59,14 @@ fun DefaultCard(
                             fadeOut(animationSpec = tween(90))
                 }
             ) {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold)
-                )
+                if (it.isBlank() || state == Status.LOADING)
+                    LoadingBox()
+                else
+
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold)
+                    )
             }
 
             Row(
@@ -67,8 +74,8 @@ fun DefaultCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
 
-                Button(onClick = { /*TODO*/ }) {
-                    Text(text = "Previous")
+                Button(onClick = onPrevious) {
+                    Text(text = "Previous ${if (historyCount > 0) historyCount else ""}")
                 }
                 Button(onClick = { /*TODO*/ }) {
                     Text(text = "Save")

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -77,8 +78,11 @@ fun MainScreen() {
             val state = remember { BoredState(viewModel = viewModel) }
 
             DefaultCard(
+                state = state.screenState.value,
                 text = state.boredActivity.value?.activity.orEmpty(),
-                onNext = state::fetchRandomActivity,
+                historyCount = state.boredActivityIndex.value,
+                onNext = state::loadNextIfExistsOrFetch,
+                onPrevious = state::loadPreviousIfExists
             )
 
         }
@@ -89,14 +93,12 @@ fun MainScreen() {
 enum class Status { ERROR, CONTENT, LOADING, NO_INTERNET }
 
 @Composable
-fun LottieAnimationTest() {
-    val sec by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.waves))
-
+fun LoadingBox() {
+    val sec by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.oading))
     LottieAnimation(
         composition = sec,
         isPlaying = true,
         restartOnPlay = true,
-        modifier = Modifier.fillMaxSize(),
         iterations = Int.MAX_VALUE
     )
 
