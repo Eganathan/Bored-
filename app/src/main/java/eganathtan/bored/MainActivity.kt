@@ -94,14 +94,18 @@ enum class Status { ERROR, CONTENT, LOADING, NO_INTERNET }
 
 @Composable
 fun LoadingBox() {
-    val sec by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.oading))
+    PlayInfiniteLottie(R.raw.oading)
+}
+
+@Composable
+fun PlayInfiniteLottie(rawId: Int) {
+    val sec by rememberLottieComposition(spec = LottieCompositionSpec.RawRes(rawId))
     LottieAnimation(
         composition = sec,
         isPlaying = true,
         restartOnPlay = true,
         iterations = Int.MAX_VALUE
     )
-
 }
 
 

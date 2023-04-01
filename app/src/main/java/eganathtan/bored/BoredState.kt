@@ -10,8 +10,7 @@ class BoredState(val viewModel: BoredViewModel) {
     val boredActivityList = mutableStateOf(listOf<BoredActivity?>())
     val boredActivityIndex: MutableState<Int> = mutableStateOf(0)
 
-    val screenState =
-        mutableStateOf(if (boredActivity.value?.activity?.isBlank() == true) Status.LOADING else Status.CONTENT)
+    val screenState = mutableStateOf(if (boredActivity.value?.activity?.isBlank() == true) Status.LOADING else Status.CONTENT)
 
     private fun fetchRandomActivity() {/*screenState.value = Status.LOADING*/
         viewModel.getRandomActivity(onSuccess = {
