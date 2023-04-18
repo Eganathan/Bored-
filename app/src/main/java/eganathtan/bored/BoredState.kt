@@ -1,16 +1,18 @@
 package eganathtan.bored
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 
-class BoredState(val viewModel: BoredViewModel) {
+class BoredState(
+    val viewModel: BoredViewModel
+) {
 
     val boredActivity: MutableState<BoredActivity?> = mutableStateOf(null)
     val boredActivityList = mutableStateOf(listOf<BoredActivity?>())
     val boredActivityIndex: MutableState<Int> = mutableStateOf(0)
 
-    val screenState = mutableStateOf(if (boredActivity.value?.activity?.isBlank() == true) Status.LOADING else Status.CONTENT)
+    val screenState =
+        mutableStateOf(if (boredActivity.value?.activity?.isBlank() == true) Status.LOADING else Status.CONTENT)
 
     private fun fetchRandomActivity() {/*screenState.value = Status.LOADING*/
         viewModel.getRandomActivity(onSuccess = {

@@ -1,6 +1,8 @@
 package eganathtan.bored
 
 import DefaultCard
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
